@@ -5,3 +5,6 @@ cd build
 cmake ../
 make -j3
 '''
+
+Set git remote to:
+https://USERNAME@github.com/jkiesele/miniCalo2
