@@ -139,8 +139,9 @@ void B4PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
   // on DetectorConstruction class we get world volume 
   // from G4LogicalVolumeStore
   //
-  G4double worldZHalfLength = 0.;
+
   auto worldLV = G4LogicalVolumeStore::GetInstance()->GetVolume("World");
+  G4double worldZHalfLength;
 
   // Check that the world volume has box shape
   G4Box* worldBox = nullptr;
@@ -164,20 +165,11 @@ void B4PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
 
   //generate a few of them
 
-  particles mainid=particleid_;
+  setParticleID(pioncharged);
   int nshots=1;
-  G4double sign=1;
 
   for(int i=0;i<nshots;i++){
 
-	  int id=(int)particleid_;
-	  if(id<(int)particles_size-1)
-		  id++;
-	  else
-		  id=0;
-
-	  particleid_=(particles)id;
-	  setParticleID(particleid_);
 
 	  energy_=1101;
 	  while(energy_>100){//somehow sometimes the random gen shoots >1??
@@ -185,44 +177,19 @@ void B4PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
 		  energy_=99*rand+1;
 	  }
 	  //G4cout << "shooting particle at " ;
-	  double xpos=10;
-	  while(fabs(xpos)>5){
-		  xpos=10*G4INCL::Random::shoot() -5;
-		  //G4cout << xpos <<  G4endl;
-	  }
-	  double ypos=10;
-	  while(fabs(ypos)>5){
-		  ypos=10*G4INCL::Random::shoot() -5;
-	  }
+	  double xpos=0;
+	  double ypos=0;
 
 	  G4ThreeVector position(xpos*cm, ypos*cm, -5*cm);
 	  xorig_=xpos;
 	  yorig_=ypos;
 
-	  //G4cout << position <<  G4endl;
-
-	  if(i==0){
-		  mainid=particleid_;
-	  }
-	  else{
-		  G4double ringsize=10*cm;
-		  //make a ring
-		  auto xycoords=G4INCL::Random::correlatedUniform(-1);
-		  G4double magnitude=xycoords.first*xycoords.first+xycoords.second*xycoords.second;
-		  magnitude=sqrt(magnitude);
-		  xycoords.first*=ringsize/magnitude*sign;
-		  xycoords.second*=ringsize/magnitude*sign;
-		  position=G4ThreeVector(xycoords.first, xycoords.second, -5*cm);
-		  G4cout << "adding particle at " << position << " " << id <<  G4endl;
-		  sign*=-1.;
-	  }
 
 	  fParticleGun->SetParticleEnergy(energy_ * GeV);
 	  fParticleGun->SetParticlePosition(position);
 	  fParticleGun->GeneratePrimaryVertex(anEvent);
 
   }
-  particleid_=mainid;
 
 }
 

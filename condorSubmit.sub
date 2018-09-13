@@ -1,0 +1,11 @@
+executable            = /afs/cern.ch/user/j/jkiesele/work/Geant4/condorScript.sh
+arguments             = 2_$(ProcId)
+log                   = $(ProcId).log
+output                = $(ProcId).out
+error                 = $(ProcId).err
+getenv = True
+use_x509userproxy = True
++MaxRuntime = 82800
+RequestCpus = 1
+max_retries = 1
+queue 600

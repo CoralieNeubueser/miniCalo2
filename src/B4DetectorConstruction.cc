@@ -224,10 +224,10 @@ G4VPhysicalVolume* B4DetectorConstruction::createLayer(G4LogicalVolume * caloLV,
 	G4double coarsedivider=(G4double)granularity;
 	G4double largesensordxy=calorSizeXY/coarsedivider;
 
-	G4int    nsmallsensorsrow=granularity*2;
+	G4int    nsmallsensorsrow=granularity/2;
 	if(granularity<2)
 		nsmallsensorsrow=0;
-	G4double smallsensordxy=largesensordxy/4;
+	G4double smallsensordxy=largesensordxy;
 
 	//divide into 4 areas:
 	// LG  HG
@@ -348,11 +348,9 @@ G4VPhysicalVolume* B4DetectorConstruction::DefineVolumes()
 	calorSizeXY  = 30.*cm;
 	layerThicknessEE=15*mm;
 	layerThicknessHB=115*mm;
-	G4double absorberFractionEE=0.0001;
-	G4double absorberFractionHB=0.0001;
-	G4double calibrationEE=1;
-	G4double calibrationHB=1;
-
+	G4double absorberFractionEE=1e-6;
+	G4double absorberFractionHB=1e-6;
+	int granularity=8;
 
 
 
@@ -393,21 +391,11 @@ G4VPhysicalVolume* B4DetectorConstruction::DefineVolumes()
 
     G4double lastzpos=-layerThicknessEE;
 	for(int i=0;i<nofEELayers+nofHB;i++){
-		int granularity=8;
 		G4double absfraction=absorberFractionEE;
 		G4double thickness=layerThicknessEE;
-		G4double calibration=calibrationEE;
-		if(i>3)
-			granularity=6;
-		if(i>7){
-			granularity=4;
-		}
-		if(i>15)
-			granularity=2;
 		if(i>=nofEELayers){
 			absfraction=absorberFractionHB;
 			thickness=layerThicknessHB;
-			calibration=calibrationHB;
 		}
 		createLayer(
 				worldLV,thickness,

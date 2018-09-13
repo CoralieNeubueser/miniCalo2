@@ -1,1 +1,7 @@
 Just to keep track of the miniCalo studies
+
+'''
+cd build
+cmake ../
+make -j3
+'''
