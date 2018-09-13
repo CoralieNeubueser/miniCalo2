@@ -6,6 +6,8 @@ export LCGENV_PATH=/cvmfs/sft.cern.ch/lcg/releases/
 export PATH=/cvmfs/sft.cern.ch/lcg/releases/lcgenv/latest/:$PATH
 export PATH=/usr/bin:$PATH
 eval "`lcgenv -p LCG_93 x86_64-slc6-gcc7-opt Geant4`"
+#because the libs screw up git window pop up
+export SSH_ASKPASS=""
 
 export G4INSTALL=/cvmfs/sft.cern.ch/lcg/releases/LCG_93/Geant4/10.04/x86_64-slc6-gcc7-opt/share/Geant4-10.4.0
 export G4LEVELGAMMADATA=$G4INSTALL/data/PhotonEvaporation5.2
