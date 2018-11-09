@@ -116,8 +116,6 @@ G4VPhysicalVolume* B4DetectorConstruction::createSandwich(G4LogicalVolume* layer
 	auto absdz=absorberfraction*dz;
 	auto gapdz=(1-absorberfraction)*dz;
 
-	//auto layerThickness = absoThickness + gapThickness;
-
 	auto sandwichS   = new G4Box("Sandwich_"+name,           // its name
 			dx/2-epsilon, dy/2-epsilon, dz/2-epsilon); // its size
 
@@ -343,23 +341,17 @@ void B4DetectorConstruction::DefineMaterials()
 G4VPhysicalVolume* B4DetectorConstruction::DefineVolumes()
 {
 	// Geometry parameters
-	const G4int nofEELayers = 10;
-	const G4int nofHB=15;
-	calorSizeXY  = 30.*cm;
-	layerThicknessEE=15*mm;
-	layerThicknessHB=115*mm;
-	G4double absorberFractionEE=1e-6;
-	G4double absorberFractionHB=1e-6;
-	int granularity=8;
+        auto caloThickness = 250*cm;  
+	const G4int numLayers = 2;
+	G4int granularity = 1;
 
+	calorSizeXY  = 100*cm;
+	auto firstLayerThickness=25*cm;
 
+	G4double absorberFraction=1e-6;	
 
-
-	auto calorThickness = nofEELayers * layerThicknessEE + nofHB*layerThicknessHB;
 	auto worldSizeXY = 1.2 * calorSizeXY;
-	auto worldSizeZ  = 1.2 * calorThickness;
-
-
+	auto worldSizeZ  = 1.2 * caloThickness;
 
 	//
 	// World
@@ -389,19 +381,19 @@ G4VPhysicalVolume* B4DetectorConstruction::DefineVolumes()
 	// Calorimeter
 	//
 
-    G4double lastzpos=-layerThicknessEE;
-	for(int i=0;i<nofEELayers+nofHB;i++){
-		G4double absfraction=absorberFractionEE;
-		G4double thickness=layerThicknessEE;
-		if(i>=nofEELayers){
-			absfraction=absorberFractionHB;
-			thickness=layerThicknessHB;
-		}
+	G4double lastzpos=-caloThickness/2.;
+	for(int i=0;i<numLayers;i++){
+		G4double absfraction=absorberFraction;
+		auto layerMinusFirst = (caloThickness-firstLayerThickness);
+		G4cout << "Layer space : " << layerMinusFirst << G4endl;
+		auto thickness = (G4double)(caloThickness-firstLayerThickness)/(G4double)numLayers;
+		G4cout << "Layer thickness : " << thickness << G4endl;
+
 		createLayer(
 				worldLV,thickness,
 				granularity,
 				absfraction,
-				G4ThreeVector(0,0,lastzpos+thickness),
+				G4ThreeVector(0,0,lastzpos+thickness/2.),
 				"layer"+createString(i),i,1);//calibration);
 		G4cout << "created layer "<<  i<<" at z="<<lastzpos+thickness << G4endl;
 		lastzpos+=thickness;
