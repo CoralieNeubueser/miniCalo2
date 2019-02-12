@@ -1,5 +1,6 @@
 #!/bin/zsh
 workdir=`pwd`
+MINICALODIR='/afs/cern.ch/work/c/cneubuse/miniCalo2'
 
 echo JOBSUB::START starting job in directory $workdir
 
@@ -19,7 +20,8 @@ then
 fi
 
 
-cp $1_out.root /eos/cms/store/cmst3/group/dehep/miniCalo2/prod/
+cp $1_out.root /eos/experiment/fcc/users/c/cneubuse/miniCalo2/prod/stage1/
+
 exitstatus=$?
 if [ $exitstatus != 0 ]
 then

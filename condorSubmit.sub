@@ -1,11 +1,10 @@
-executable            = /afs/cern.ch/user/j/jkiesele/work/Geant4/condorScript.sh
+executable            = /afs/cern.ch/work/c/cneubuse/miniCalo2/condorScript.sh
 arguments             = 2_$(ProcId)
-log                   = $(ProcId).log
-output                = $(ProcId).out
-error                 = $(ProcId).err
+log                   = /afs/cern.ch/work/c/cneubuse/miniCalo2//log/$(ProcId).log
+output                = /afs/cern.ch/work/c/cneubuse/miniCalo2/out/$(ProcId).out
+error                 = /afs/cern.ch/work/c/cneubuse/miniCalo2/err/$(ProcId).err
 getenv = True
-use_x509userproxy = True
 +MaxRuntime = 82800
 RequestCpus = 1
 max_retries = 1
-queue 600
+queue 5000
