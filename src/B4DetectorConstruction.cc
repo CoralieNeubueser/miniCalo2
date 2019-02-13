@@ -342,7 +342,7 @@ G4VPhysicalVolume* B4DetectorConstruction::DefineVolumes()
 {
 	// Geometry parameters
         auto caloThickness = 250*cm;  
-	const G4int numLayers = 2;
+	const G4int numLayers = 10;
 	G4int granularity = 1;
 
 	calorSizeXY  = 100*cm;
