@@ -7,4 +7,4 @@ getenv = True
 +MaxRuntime = 82800
 RequestCpus = 1
 max_retries = 1
-queue 5000
+queue 10
