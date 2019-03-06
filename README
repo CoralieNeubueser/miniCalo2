@@ -8,3 +8,9 @@ make -j3
 
 Set git remote to:
 https://USERNAME@github.com/jkiesele/miniCalo2
+
+
+For fitting and storing the resolutions:
+
+root -l 
+.x plot/resolution.C("...(give config name)...")
