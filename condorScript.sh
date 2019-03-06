@@ -1,10 +1,10 @@
 #!/bin/zsh
 workdir=`pwd`
-MINICALODIR='/afs/cern.ch/work/c/cneubuse/miniCalo2'
+MINICALO = "/afs/cern.ch/work/c/cneubuse/prod/miniCalo2"
 
 echo JOBSUB::START starting job in directory $workdir
 
-cd $MINICALODIR
+cd ${MINICALO}
 source env.sh
 cp build/exampleB4a $workdir/runGeant
 cp batchrun.mac $workdir/
@@ -20,7 +20,7 @@ then
 fi
 
 
-cp $1_out.root /eos/user/c/cneubuse/miniCalo2/prod/stage1/
+cp $1_out.root /eos/user/c/cneubuse/miniCalo2/prod/stage0/
 
 exitstatus=$?
 if [ $exitstatus != 0 ]
