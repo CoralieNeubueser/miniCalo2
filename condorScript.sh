@@ -20,7 +20,7 @@ then
 fi
 
 
-cp $1_out.root /eos/user/c/cneubuse/miniCalo2/prod/stage2/
+cp $1_out.root /eos/user/c/cneubuse/miniCalo2/test/stage2/
 
 exitstatus=$?
 if [ $exitstatus != 0 ]

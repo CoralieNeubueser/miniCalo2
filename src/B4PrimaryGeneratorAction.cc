@@ -169,14 +169,14 @@ void B4PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
   int nshots=1;
 
   for(int i=0;i<nshots;i++){
-
-
+    
 	  energy_=1101;
 	  while(energy_>100){//somehow sometimes the random gen shoots >1??
 		  G4double rand =  G4INCL::Random::shoot();
-		  energy_=99*rand+1;
+		  energy_= std::floor(rand*10)*10+10;
 	  }
-	  //G4cout << "shooting particle at " ;
+	  //	  std::cout <<"particle energy : "<< energy_ << std::endl;
+
 	  double xpos=0;
 	  double ypos=0;
 
