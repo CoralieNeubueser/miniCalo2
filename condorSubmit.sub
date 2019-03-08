@@ -1,4 +1,4 @@
-executable            = /afs/cern.ch/work/c/cneubuse/miniCalo2/condorScript.sh
+executable            = /afs/cern.ch/work/c/cneubuse/prod/miniCalo2/condorScript.sh
 arguments             = 2_$(ProcId)
 log                   = /afs/cern.ch/work/c/cneubuse/miniCalo2//log/$(ProcId).log
 output                = /afs/cern.ch/work/c/cneubuse/miniCalo2/out/$(ProcId).out

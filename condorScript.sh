@@ -1,6 +1,6 @@
 #!/bin/zsh
 workdir=`pwd`
-MINICALO = "/afs/cern.ch/work/c/cneubuse/prod/miniCalo2"
+MINICALO='/afs/cern.ch/work/c/cneubuse/prod/miniCalo2'
 
 echo JOBSUB::START starting job in directory $workdir
 
