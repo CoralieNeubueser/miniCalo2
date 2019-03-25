@@ -1,10 +1,10 @@
-executable            = /afs/cern.ch/work/c/cneubuse/miniCalo2/condorScript.sh
-arguments             = 2_$(ProcId)
-log                   = /afs/cern.ch/work/c/cneubuse/miniCalo2//log/$(ProcId).log
-output                = /afs/cern.ch/work/c/cneubuse/miniCalo2/out/$(ProcId).out
-error                 = /afs/cern.ch/work/c/cneubuse/miniCalo2/err/$(ProcId).err
+executable            = /afs/cern.ch/work/c/cneubuse/prod/miniCalo2/condorScript.sh
+arguments             = 2_$(ProcId)	
+log                   = /afs/cern.ch/work/c/cneubuse/prod/miniCalo2//log/$(ProcId).log
+output                = /afs/cern.ch/work/c/cneubuse/prod/miniCalo2/out/$(ProcId).out
+error                 = /afs/cern.ch/work/c/cneubuse/prod/miniCalo2/err/$(ProcId).err
 getenv = True
 +MaxRuntime = 82800
 RequestCpus = 1
 max_retries = 1
-queue 5000
+queue 100
