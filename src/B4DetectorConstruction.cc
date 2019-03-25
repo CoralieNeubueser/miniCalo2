@@ -51,6 +51,8 @@
 #include "G4PhysicalConstants.hh"
 #include "G4SystemOfUnits.hh"
 
+#include "G4GDMLParser.hh"
+
 #include "sensorContainer.h"
 
 #include <cstdlib>
@@ -97,8 +99,14 @@ G4VPhysicalVolume* B4DetectorConstruction::Construct()
 	// Define materials
 	DefineMaterials();
 
-	// Define volumes
-	return DefineVolumes();
+	auto volumes = DefineVolumes();
+
+        G4GDMLParser Parser;
+        Parser.Write("Geometry_stage3.gdml", volumes);
+
+	// Define volumes                                                                                                                                                                             
+        return volumes;
+	
 }
 
 /*
@@ -342,11 +350,11 @@ G4VPhysicalVolume* B4DetectorConstruction::DefineVolumes()
 {
 	// Geometry parameters
         auto caloThickness = 250*cm;  
-	const G4int numLayers = 10;
+	const G4int numLayers = 20;
 	G4int granularity = 1;
 
 	calorSizeXY  = 100*cm;
-	auto firstLayerThickness=25*cm;
+	auto firstLayerThickness=12.5*cm;
 
 	G4double absorberFraction=1e-6;	
 
