@@ -170,10 +170,10 @@ void B4aEventAction::EndOfEventAction(const G4Event* event)
   analysisManager->FillNtupleDColumn(i+2,B4PrimaryGeneratorAction::globalgen->getY());
   analysisManager->FillNtupleDColumn(i+3,B4PrimaryGeneratorAction::globalgen->getR());
 
-  //filling deposits and volume info for all volumes automatically..
-  for(auto& e:rechit_energy_){
-	  if(e<0.01)e=0; //threshold
-  }
+//  //filling deposits and volume info for all volumes automatically..
+//  for(auto& e:rechit_energy_){
+//	  if(e<0.01)e=0; //threshold
+//  }
 
   analysisManager->AddNtupleRow();  
 
