@@ -102,7 +102,7 @@ G4VPhysicalVolume* B4DetectorConstruction::Construct()
 	auto volumes = DefineVolumes();
 
         G4GDMLParser Parser;
-        Parser.Write("Geometry_test_stage3.gdml", volumes);
+        Parser.Write("Geometry_test_maxGranular.gdml", volumes);
 
 	// Define volumes                                                                                                                                                                             
         return volumes;
@@ -203,12 +203,13 @@ G4VPhysicalVolume* B4DetectorConstruction::createSandwich(G4LogicalVolume* layer
 
 G4VPhysicalVolume* B4DetectorConstruction::createLayer(G4LogicalVolume * caloLV,
 		G4double thickness,
-		G4int granularity, G4double absfraction,G4ThreeVector position,
+		G4int sensorSize, G4double absfraction,G4ThreeVector position,
 		G4String name, int layernumber, G4double calibration){
 
-
-
-	auto layerS   = new G4Box("Layer_"+name,           // its name
+  
+  G4double largesensordxy = std::floor(calorSizeXY/sensorSize);
+  
+  auto layerS   = new G4Box("Layer_"+name,           // its name
 			calorSizeXY/2, calorSizeXY/2, thickness/2); // its size
 
 	auto layerLV  = new G4LogicalVolume(
@@ -225,22 +226,6 @@ G4VPhysicalVolume* B4DetectorConstruction::createLayer(G4LogicalVolume * caloLV,
 			false,            // no boolean operation
 			0,                // copy number
 			fCheckOverlaps);  // checking overlaps
-
-
-	G4double coarsedivider=(G4double)granularity;
-	G4double largesensordxy=calorSizeXY/coarsedivider;
-
-	G4int    nsmallsensorsrow=granularity/2;
-	if(granularity<2)
-		nsmallsensorsrow=0;
-	G4double smallsensordxy=largesensordxy;
-
-	//divide into 4 areas:
-	// LG  HG
-	// LG  LG
-	//
-	// LG: low granularity
-	// HG: high granularity
 
 
 	auto placeSensors = [] (
@@ -291,17 +276,14 @@ G4VPhysicalVolume* B4DetectorConstruction::createLayer(G4LogicalVolume * caloLV,
 
 
 	//place LG sensors:
-	placeSensors(lowerleftcorner, false,largesensordxy,thickness,
-			granularity,G4ThreeVector(0,0,0),name,&activecells_,layerLV,this,
-			position,absfraction,layernumber,calibration);
-	placeSensors(G4ThreeVector(0,0,0), true,smallsensordxy,thickness,
-			nsmallsensorsrow,G4ThreeVector(0,0,0),name,&activecells_,layerLV,
-			this,position,absfraction,layernumber,calibration);
+        placeSensors(lowerleftcorner,true,sensorSize,thickness,
+		     largesensordxy,G4ThreeVector(0,0,0),name,&activecells_,layerLV,this,
+		     position,absfraction,layernumber,calibration);
 
 	G4cout << "layer position="<<position <<G4endl;
-
+	
 	return layerPV;
-
+	
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -349,20 +331,24 @@ void B4DetectorConstruction::DefineMaterials()
 G4VPhysicalVolume* B4DetectorConstruction::DefineVolumes()
 {
 	// Geometry parameters
-        const radLengthLeadGlass = 1.3*cm;
-        const nuclIntLengthLeadGlass = 25*cm;
+  const G4double sensorSize = 2.*cm;//1.3*cm;                                                                                                                                                    
+
+  const G4double radLengthLeadGlass = 1.5*cm;//1.3*cm;
+        const G4double nuclIntLengthLeadGlass = 25*cm;
 	
 	auto caloThickness = 10*nuclIntLengthLeadGlass;
 
-	const G4int numLayers = std::floor(caloThickness/radLengthLeadGlass);
+	const G4int numLayers = std::floor(caloThickness/sensorSize);
 	G4cout << "Building " << numLayers << " layers of " << caloThickness/numLayers/radLengthLeadGlass << " #X0. "<< G4endl;
 
-	G4int granularity = radLengthLeadGlass;
-
 	calorSizeXY  = 100*cm;
-	auto firstLayerThickness=radLengthLeadGlass;
 
-	G4double absorberFraction=0.; //1e-6;	
+        G4int granularity = std::floor(calorSizeXY/sensorSize);
+        G4cout << "with " << granularity << " x " << granularity << " granularity. "<< G4endl;
+
+	auto firstLayerThickness=sensorSize;
+
+	G4double absorberFraction=1e-6;	
 
 	auto worldSizeXY = 1.2 * calorSizeXY;
 	auto worldSizeZ  = 1.2 * caloThickness;
@@ -405,7 +391,7 @@ G4VPhysicalVolume* B4DetectorConstruction::DefineVolumes()
 
 		createLayer(
 				worldLV,thickness,
-				granularity,
+				sensorSize,
 				absfraction,
 				G4ThreeVector(0,0,lastzpos+thickness/2.),
 				"layer"+createString(i),i,1);//calibration);
