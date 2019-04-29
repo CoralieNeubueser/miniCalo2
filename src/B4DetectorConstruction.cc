@@ -77,7 +77,7 @@ static G4String createString(const T& i){
 
 B4DetectorConstruction::B4DetectorConstruction()
 : G4VUserDetectorConstruction(),
-  fCheckOverlaps(false),
+  fCheckOverlaps(true),
   defaultMaterial(0),
   absorberMaterial(0),
   gapMaterial(0)
