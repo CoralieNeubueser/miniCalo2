@@ -77,7 +77,7 @@ static G4String createString(const T& i){
 
 B4DetectorConstruction::B4DetectorConstruction()
 : G4VUserDetectorConstruction(),
-  fCheckOverlaps(true),
+  fCheckOverlaps(false),
   defaultMaterial(0),
   absorberMaterial(0),
   gapMaterial(0)
@@ -102,7 +102,7 @@ G4VPhysicalVolume* B4DetectorConstruction::Construct()
 	auto volumes = DefineVolumes();
 
         G4GDMLParser Parser;
-        Parser.Write("Geometry_stage3.gdml", volumes);
+        Parser.Write("Geometry_test_stage3.gdml", volumes);
 
 	// Define volumes                                                                                                                                                                             
         return volumes;
@@ -349,14 +349,20 @@ void B4DetectorConstruction::DefineMaterials()
 G4VPhysicalVolume* B4DetectorConstruction::DefineVolumes()
 {
 	// Geometry parameters
-        auto caloThickness = 250*cm;  
-	const G4int numLayers = 20;
-	G4int granularity = 1;
+        const radLengthLeadGlass = 1.3*cm;
+        const nuclIntLengthLeadGlass = 25*cm;
+	
+	auto caloThickness = 10*nuclIntLengthLeadGlass;
+
+	const G4int numLayers = std::floor(caloThickness/radLengthLeadGlass);
+	G4cout << "Building " << numLayers << " layers of " << caloThickness/numLayers/radLengthLeadGlass << " #X0. "<< G4endl;
+
+	G4int granularity = radLengthLeadGlass;
 
 	calorSizeXY  = 100*cm;
-	auto firstLayerThickness=12.5*cm;
+	auto firstLayerThickness=radLengthLeadGlass;
 
-	G4double absorberFraction=1e-6;	
+	G4double absorberFraction=0.; //1e-6;	
 
 	auto worldSizeXY = 1.2 * calorSizeXY;
 	auto worldSizeZ  = 1.2 * caloThickness;
