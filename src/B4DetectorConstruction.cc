@@ -349,12 +349,18 @@ void B4DetectorConstruction::DefineMaterials()
 G4VPhysicalVolume* B4DetectorConstruction::DefineVolumes()
 {
 	// Geometry parameters
-        auto caloThickness = 250*cm;  
-	const G4int numLayers = 20;
-	G4int granularity = 1;
+        const radLengthLeadGlass = 1.3*cm;
+        const nuclIntLengthLeadGlass = 25*cm;
+	
+	auto caloThickness = 10*nuclIntLengthLeadGlass;
+
+	const G4int numLayers = std::floor(caloThickness/radLengthLeadGlass);
+	G4cout << "Building " << numLayers << " layers of " << caloThickness/numLayers/radLengthLeadGlass << " #X0. "<< G4endl;
+
+	G4int granularity = radLengthLeadGlass;
 
 	calorSizeXY  = 100*cm;
-	auto firstLayerThickness=12.5*cm;
+	auto firstLayerThickness=radLengthLeadGlass;
 
 	G4double absorberFraction=0.; //1e-6;	
 
